@@ -1,0 +1,50 @@
+html {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 75%
+}
+
+body {
+    size: 100%;
+    background-color: rgb(62, 62, 131);
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 2rem;
+    text-align: center;
+    vertical-align: middle;
+    color: rgb(93, 255, 255);
+}
+
+h1 {
+    margin: 10px;
+}
+
+input {
+    font-size: 2rem;
+    margin: 10px;
+}
+
+#playerList {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+#leaderboardList {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.questionInput {
+    width: 1000px;
+}
+
+.loginBtn {
+    margin: 10px;
+    font-size: 2rem;
+}
+
+.hidden {
+    display: none;
+}

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>SoapFox</title>
+    <link rel="icon" href="https://fav.farm/🧼"/>
+    <link rel="stylesheet" href="styles.css"/>
+    <script src = "/socket.io/socket.io.js"></script>
+    <script src="script.js" defer></script>
+</head>
+
+<body>
+
+    <h1>SoapFox</h1>
+
+    <div id="homeScreen">
+        <form id="loginForm">
+            <input id="nameInput" placeholder="Username"/>
+            <button id="createBtn" class="loginBtn "type="button">Create</button><br>
+            <input id="codeInput" placeholder="Code"/>
+            <button id="joinBtn" class="loginBtn" type="button">Join</button>
+        </form>
+    </div>
+
+    <div id="lobbyScreen" class="hidden">
+        <h2>Room Code: <span id="displayRoomCode"></span></h2>
+        <h3 id="playersHeader">Players</h3>
+        <ul id="playerList"></ul>
+        <button id="startGameBtn" class="hidden loginBtn">Start Game</button>
+    </div>
+
+
+
+    <div id="questionsScreen" class="hidden">
+        <label>Come up a question for others to answer.</label>
+        <form id="questionForm"></form>
+        <input class="questionInput" id="questionInput" placeholder="What is your question?"><br>
+        <button id="questionBtn" type="button" class="loginBtn">Submit</button>
+    </div>
+
+    <div id="waitingScreen" class="hidden">
+        <label>Waiting for other players...</label>
+    </div>
+
+    <div id="answersScreen" class="hidden">
+        <label>Come up with the best answer for each of these questions.</label><br>
+        <label id="assignedQuestion1">Q1:</label>
+        <input class="answerInput" id="answer1"><br>
+        <label id="assignedQuestion2">Q2:</label>
+        <input class="answerInput" id="answer2"><br>
+        <button id="answerBtn" type="button" class="loginBtn">Submit</button>
+    </div>
+
+    <div id="voteScreen" class="hidden">
+        <label id="currentQuestion">Placeholder question.</label><br>
+        <button id="voteLeft" type="button" class="loginBtn">Left</button>
+        <button id="voteRight" type="button" class="loginBtn">Right</button>
+    </div>
+
+    <div id="scoreScreen" class="hidden">
+        <h2>Final Scores</h2>
+        <ul id="leaderboardList"></ul>
+        <button id="againBtn" class="loginBtn">Again!</button>
+    </div>
+
+</body>
+</html>
