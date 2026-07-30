@@ -1,50 +1,135 @@
-html {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 75%
+/* 1. Playful Google Font */
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap');
+
+/* 2. Global Variables for easy color management */
+:root {
+    --bg-color: rgb(62, 62, 131);
+    --title-color: rgb(93, 255, 255);
+    --container-bg: rgba(255, 255, 255, 0.1); /* Semi-transparent rounded boxes */
+    --text-color: #ffffff;
+}
+
+/* 3. Global Reset */
+* {
+    box-sizing: border-box; /* Keeps padding from breaking container widths */
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    height: 100%;
+    width: 100%;
 }
 
 body {
-    size: 100%;
-    background-color: rgb(62, 62, 131);
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
-    font-size: 2rem;
+    background-color: var(--bg-color);
+    font-family: 'Fredoka', Verdana, sans-serif;
+    color: var(--text-color);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     text-align: center;
-    vertical-align: middle;
-    color: rgb(93, 255, 255);
 }
 
+/* 4. Title Styling */
 h1 {
-    margin: 10px;
+    color: var(--title-color);
+    font-size: 4rem;
+    margin-bottom: 30px;
+    text-shadow: 0 4px 8px rgba(0,0,0,0.3); /* Adds depth to the title */
 }
 
+h2, h3 {
+    margin-bottom: 15px;
+    display: block;
+    font-weight: 400;
+}
+
+label {
+    margin-bottom: 15px;
+    display: block;
+    font-weight: 400;
+    font-size: 2rem;
+}
+
+/* 5. The Rounded Box Containers */
+#homeScreen, #lobbyScreen, #questionsScreen, #waitingScreen, #answersScreen, #voteScreen, #scoreScreen {
+    background-color: var(--container-bg);
+    padding: 40px;
+    border-radius: 25px; /* Heavy rounding */
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    width: 90%;
+    max-width: 500px; /* Ensures it looks good on both phone and desktop */
+    backdrop-filter: blur(10px); /* Frosted glass effect */
+}
+
+/* 6. Inputs */
 input {
-    font-size: 2rem;
-    margin: 10px;
+    font-family: inherit;
+    font-size: 1.5rem;
+    padding: 15px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    width: 100%;
+    border: 3px solid transparent;
+    border-radius: 15px;
+    background-color: rgba(255, 255, 255, 0.95);
+    color: #333;
+    outline: none;
+    transition: border 0.2s ease;
 }
 
-#playerList {
+input:focus {
+    border: 3px solid var(--title-color);
+}
+
+/* 7. Tactile Buttons */
+button {
+    font-family: inherit;
+    font-size: 1.5rem;
+    font-weight: 600;
+    padding: 15px 30px;
+    margin-top: 10px;
+    margin-bottom: 15px;
+    width: 100%;
+    border: none;
+    border-radius: 15px;
+    background-color: var(--title-color);
+    color: var(--bg-color); /* Inverted for high contrast */
+    cursor: pointer;
+    box-shadow: 0 6px 0 rgb(65, 180, 180); /* Creates a 3D physical button look */
+    transition: transform 0.1s, box-shadow 0.1s;
+}
+
+button:active {
+    transform: translateY(6px); /* Pushes the button down when clicked */
+    box-shadow: 0 0px 0 rgb(65, 180, 180);
+}
+
+button:disabled {
+    background-color: #888;
+    color: #ccc;
+    box-shadow: 0 6px 0 #555;
+    cursor: not-allowed;
+}
+
+/* 8. Lists (Lobby & Scores) */
+ul {
     list-style-type: none;
     padding: 0;
-    margin: 0;
+    margin-bottom: 20px;
 }
 
-#leaderboardList {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
+li {
+    background-color: rgba(0, 0, 0, 0.25);
+    padding: 12px;
+    margin: 8px 0;
+    border-radius: 12px;
+    font-size: 1.3rem;
 }
 
-.questionInput {
-    width: 1000px;
-}
-
-.loginBtn {
-    margin: 10px;
-    font-size: 2rem;
-}
-
+/* 9. Utility */
 .hidden {
     display: none;
 }

@@ -68,8 +68,8 @@ socket.on("start_answering", (data) => {
     currentQ1 = data.q1;
     currentQ2 = data.q2;
 
-    assignedQuestion1.innerText = "Q1: " + currentQ1.text;
-    assignedQuestion2.innerText = "Q2: " + currentQ2.text;
+    assignedQuestion1.innerText = currentQ1.text;
+    assignedQuestion2.innerText = currentQ2.text;
 
     waitingScreen.style.display = "none";
     answersScreen.style.display = "block";
@@ -120,9 +120,6 @@ if (joinButton)  {
         const roomCode = codeInput.value.trim().toUpperCase();
         if (userName !== "" || roomCode !== "") {
             socket.emit('join_room', { username: userName, roomCode: roomCode });
-            homeScreen.style.display = "none";
-            lobbyScreen.style.display = "block";
-            displayRoomCode.innerText = roomCode;
         }
     });
 }
@@ -195,5 +192,35 @@ socket.on(`show_scores`, (leaderboard) => {
         const li = document.createElement("li");
         li.innerText = `${player.name}: ${player.score}`;
         leaderboardList.appendChild(li);
+    });
+});
+
+socket.on('join_success', (code) => {
+    homeScreen.style.display = "none";
+    lobbyScreen.style.display = "block";
+    displayRoomCode.innerText = code;
+});
+
+if (againButton) {
+    againButton.addEventListener("click", () => {
+        const currentRoom = displayRoomCode.innerText;
+        socket.emit("play_again", currentRoom);
+    });
+}
+
+socket.on('return_to_lobby', (players) => {
+    scoreScreen.style.display = "none";
+    
+    if (questionInput) questionInput.value = "";
+    if (answer1) answer1.value = "";
+    if (answer2) answer2.value = "";
+
+    lobbyScreen.style.display = "block";
+
+    playerList.innerHTML = "";
+    players.forEach(player => {
+        const li = document.createElement("li");
+        li.innerText = player.name;
+        playerList.appendChild(li);
     });
 });

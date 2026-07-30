@@ -4,7 +4,12 @@ const { Server } = require('socket.io');
 
 const app = express();
 const server = http.createServer(app);
-const io = new Server(server);
+const io = new Server(server, {
+    cors: {
+        origin: "*",
+        methods: ["GET", "POST"]
+    }
+});
 
 // Serve the static files.
 app.use(express.static(__dirname));
@@ -58,6 +63,10 @@ io.on('connection', (socket) => {
 
         const { username, roomCode} = data;
 
+        if (!rooms[roomCode]) {
+            return;
+        }
+
         // Players use room codes to join.
         socket.join(roomCode);
 
@@ -79,6 +88,8 @@ io.on('connection', (socket) => {
 
         console.log(`${username} joined room:  ${roomCode}`);
         
+        socket.emit('join_success', roomCode);
+
         // Let the people know.
         io.to(roomCode).emit('player_joined', rooms[roomCode].players);
     });
@@ -90,7 +101,7 @@ io.on('connection', (socket) => {
     });
 
     socket.on('start_game', (roomCode) => {
-        if (rooms[roomCode]) {
+        if (rooms[roomCode] && rooms[roomCode].players.length >= 2) {
             rooms[roomCode].status = 'writing';
             io.to(roomCode).emit('start_writing');
             console.log(`Room ${roomCode} has started the writing phase.`);
@@ -182,6 +193,21 @@ io.on('connection', (socket) => {
                 room.currentVoteIndex += 1;
                 startNextVote(roomCode);
             }
+        }
+    });
+
+    socket.on('play_again', roomCode => {
+        const room = rooms[roomCode];
+
+        if (room) {
+            console.log(`Resetting room ${roomCode}.`);
+            room.questions = [];
+            room.status = 'lobby';
+            room.playersAnswered = 0;
+            room.currentVoteIndex = 0;
+            room.currentQuestionVotes = 0;
+
+            io.io(roomCode).emit('return_to_lobby', room.players);
         }
     });
 });
