@@ -53,8 +53,8 @@
 
     <div id="voteScreen" class="hidden">
         <label id="currentQuestion">Placeholder question.</label><br>
-        <button id="voteLeft" type="button" class="loginBtn">Left</button>
-        <button id="voteRight" type="button" class="loginBtn">Right</button>
+        <button id="vote0" type="button" class="loginBtn">Left</button>
+        <button id="vote1" type="button" class="loginBtn">Right</button>
     </div>
 
     <div id="scoreScreen" class="hidden">
@@ -62,6 +62,13 @@
         <ul id="leaderboardList"></ul>
         <button id="againBtn" class="loginBtn">Again!</button>
     </div>
+
+    <div id="winnerScreen" class="hidden">
+        <h2>Round Winner!</h2>
+        <h1 id="winningAnswerText" style="color: var(--title-color); font-size: 3rem; margin: 20px 0;">Answer</h1>
+        <h3 id="winningPlayerText">Submitted by: PlayerName</h3>
+    </div>
+
 
 </body>
 </html>

@@ -34,8 +34,8 @@ const answersButton = document.getElementById("answerBtn");
 // Vote elements
 const voteScreen = document.getElementById("voteScreen");
 const currentQuestion = document.getElementById("currentQuestion");
-const voteLeft = document.getElementById("voteLeft");
-const voteRight = document.getElementById("voteRight");
+const vote0 = document.getElementById("vote0");
+const vote1 = document.getElementById("vote1");
 
 // Score elements
 const scoreScreen = document.getElementById("scoreScreen");
@@ -149,13 +149,13 @@ socket.on('player_joined', (players) => {
 
 socket.on('start_vote', (data) => {
     currentQuestion.innerText = data.question;
-    voteLeft.innerText = data.answer1;
-    voteRight.innerText = data.answer2;
+    vote0.innerText = data.answer1;
+    vote1.innerText = data.answer2;
     waitingScreen.style.display = "none";
     answersScreen.style.display = "none";
     voteScreen.style.display = "block";
-    voteLeft.disabled = false;
-    voteRight.disabled = false;
+    vote0.disabled = false;
+    vote1.disabled = false;
 });
 
 
@@ -167,18 +167,25 @@ function submitVote(voteIndex) {
         voteIndex: voteIndex 
     });
     
-    voteLeft.disabled = true;
-    voteRight.disabled = true;
-    voteLeft.innerText = "Waiting...";
-    voteRight.innerText = "Waiting...";
+    vote0.disabled = true;
+    vote1.disabled = true;
 }
 
-if (voteLeft) {
-    voteLeft.addEventListener("click", () => submitVote(0));
+if (vote0) {
+    vote0.addEventListener("click", () => submitVote(0));
 }
-if (voteRight) {
-    voteRight.addEventListener("click", () => submitVote(1));
+if (vote1) {
+    vote1.addEventListener("click", () => submitVote(1));
 }
+
+socket.on(`update_votes`, (answers) => {
+    vote0.innerText += "\n" + answers[0].votes + " vote";
+    if (answers[0].votes !== 1) vote0.innerText += "s";
+    vote1.innerText += "\n" + answers[1].votes + " vote";
+    if (answers[1].votes !== 1) vote1.innerText += "s";
+});
+
+
 
 socket.on(`show_scores`, (leaderboard) => {
     voteScreen.style.display = "none";

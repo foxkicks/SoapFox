@@ -54,7 +54,7 @@ label {
 }
 
 /* 5. The Rounded Box Containers */
-#homeScreen, #lobbyScreen, #questionsScreen, #waitingScreen, #answersScreen, #voteScreen, #scoreScreen {
+#homeScreen, #lobbyScreen, #questionsScreen, #waitingScreen, #answersScreen, #voteScreen, #scoreScreen #winnerScreen {
     background-color: var(--container-bg);
     padding: 40px;
     border-radius: 25px; /* Heavy rounding */

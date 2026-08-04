@@ -97,7 +97,6 @@ io.on('connection', (socket) => {
     // Disconnecting from a room.
     socket.on('disconnect', () => {
         console.log(`User disconnected: ${socket.id}`);
-        // TODO: Implement sudden disconnect logic.
     });
 
     socket.on('start_game', (roomCode) => {
@@ -156,7 +155,6 @@ io.on('connection', (socket) => {
     socket.on('submit_answers', (data) => {
         const { roomCode, answers } = data;
         const room = rooms[roomCode];
-
         if (room) {
             answers.forEach(ans => {
                 const question = room.questions.find(q => q.authorId === ans.questionAuthorId);
@@ -191,7 +189,8 @@ io.on('connection', (socket) => {
 
             if (room.currentQuestionVotes === room.players.length) {
                 room.currentVoteIndex += 1;
-                startNextVote(roomCode);
+                io.to(roomCode).emit(`update_votes`, (currentQuestion.answers));
+                sleep(5000).then(() => {startNextVote(roomCode); });
             }
         }
     });
@@ -207,7 +206,7 @@ io.on('connection', (socket) => {
             room.currentVoteIndex = 0;
             room.currentQuestionVotes = 0;
 
-            io.io(roomCode).emit('return_to_lobby', room.players);
+            io.to(roomCode).emit('return_to_lobby', room.players);
         }
     });
 });
@@ -241,6 +240,10 @@ function startNextVote(roomCode) {
         const leaderboard = Object.values(scores).sort((a, b) => b.score - a.score);
         io.to(roomCode).emit(`show_scores`, leaderboard);
     }
+}
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 const PORT = process.env.PORT || 3000;
