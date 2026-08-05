@@ -42,6 +42,9 @@ const scoreScreen = document.getElementById("scoreScreen");
 const leaderboardList = document.getElementById("leaderboardList");
 const againButton = document.getElementById("againBtn");
 
+const disconnectDialog = document.getElementById("disconnect-modal");
+const disconnectButton = document.getElementById("modal-ok-btn");
+
 // Global variables.
 let userName = "";
 let roomCode = "";
@@ -230,4 +233,15 @@ socket.on('return_to_lobby', (players) => {
         li.innerText = player.name;
         playerList.appendChild(li);
     });
+});
+
+
+// Disconnect logic.
+socket.on(`player_disconnected`, (data) => {
+    disconnectDialog.showModal();
+});
+
+disconnectButton.addEventListener('click', () => {
+    disconnectDialog.close();
+    window.location.reload(true);
 });

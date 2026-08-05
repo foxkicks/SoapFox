@@ -56,8 +56,6 @@ io.on('connection', (socket) => {
         console.log(`Room created: ${roomCode}`);
     });
 
-    console.log(`A user connected ${socket.id}`);
-
     // Listen for players joining.
     socket.on('join_room', (data) => {
 
@@ -69,6 +67,8 @@ io.on('connection', (socket) => {
 
         // Players use room codes to join.
         socket.join(roomCode);
+
+        socket.roomID = roomCode;
 
         // Initialize the room in memory if it doesn't exist.
         if (!rooms[roomCode]) {
@@ -95,15 +95,20 @@ io.on('connection', (socket) => {
     });
 
     // Disconnecting from a room.
-    socket.on('disconnect', () => {
-        console.log(`User disconnected: ${socket.id}`);
+    socket.on('disconnect', (reason) => {
+        if (socket.roomID) {
+            io.to(socket.roomID).emit(`player_disconnected`, {
+                message: "A player disconnected. The game will now reload."
+            });
+        }
+
+        delete rooms[socket.roomID];
     });
 
     socket.on('start_game', (roomCode) => {
         if (rooms[roomCode] && rooms[roomCode].players.length >= 2) {
             rooms[roomCode].status = 'writing';
             io.to(roomCode).emit('start_writing');
-            console.log(`Room ${roomCode} has started the writing phase.`);
         }
     });
 
@@ -124,7 +129,6 @@ io.on('connection', (socket) => {
             console.log(`${author.name} submmitted a question in ${roomCode}. Total: ${room.questions.length}/${room.players.length}`);
 
             if (room.questions.length === room.players.length) {
-                console.log(`All questions received for room ${roomCode}`)
                 room.status = 'assigning';
 
                 let ring = [...room.players];
@@ -217,14 +221,12 @@ function startNextVote(roomCode) {
     if (room.currentVoteIndex < room.questions.length) {
         const currentQuestion = room.questions[room.currentVoteIndex];
         room.currentQuestionVotes = 0;
-        console.log(`Starting vote for question: "${currentQuestion.text}"`);
         io.to(roomCode).emit('start_vote', {
             question: currentQuestion.text,
             answer1: currentQuestion.answers[0].text,
             answer2: currentQuestion.answers[1].text
         });
     }  else {
-        console.log(`Voting complete for room ${roomCode}. Loading scores.`);
         const scores = {};
         room.players.forEach(p => {
             scores[p.id] = { name: p.name, score: 0 };

@@ -57,11 +57,30 @@ label {
 #homeScreen, #lobbyScreen, #questionsScreen, #waitingScreen, #answersScreen, #voteScreen, #scoreScreen #winnerScreen {
     background-color: var(--container-bg);
     padding: 40px;
-    border-radius: 25px; /* Heavy rounding */
+    border-radius: 25px;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
     width: 90%;
-    max-width: 500px; /* Ensures it looks good on both phone and desktop */
+    max-width: 500px;
     backdrop-filter: blur(10px); /* Frosted glass effect */
+}
+
+dialog {
+    background-color: var(--container-bg);
+    color: white;
+    padding: 40px;
+    border-radius: 25px;
+    text-align: center;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    width: 90%;
+    max-width: 500px;
+    backdrop-filter: blur(10px);
+    margin: auto;
+    align-self: center;
+}
+
+dialog::backdrop {
+    background-color: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(4px);
 }
 
 /* 6. Inputs */
